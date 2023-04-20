@@ -1,0 +1,32 @@
+version: '3.8'
+
+services:
+  jwt-example-backend:
+    build: .
+    ports:
+      - '5122:5122'
+    container_name: jwt-example-backend
+    environment:
+      - MYSQL_DATABASE=${MYSQL_DATABASE}
+      - MYSQL_HOST=${MYSQL_DOCKER_HOST}
+      - MYSQL_ROOT_USER=${MYSQL_ROOT_USER}
+      - MYSQL_ROOT_PASSWORD=${MYSQL_ROOT_PASSWORD}
+      - MYSQL_PORT=${MYSQL_PORT}
+      - MYSQL_POOL_CONNECTION_LIMIT=${MYSQL_POOL_CONNECTION_LIMIT}
+      - JWT_SECRET_KEY=${JWT_SECRET_KEY}
+    volumes:
+      - .:/app
+      - /app/node_modules
+
+    depends_on:
+      - jwt-example-mysql
+  
+  jwt-example-mysql:
+    image: mysql:8.0.32
+    ports:
+      - '3306:3306'
+    container_name: jwt-example-mysql
+    environment:
+      - MYSQL_DATABASE=${MYSQL_DATABASE}
+      - MYSQL_ROOT_PASSWORD=${MYSQL_ROOT_PASSWORD}
+      - MYSQL_HOST=${MYSQL_HOST}
